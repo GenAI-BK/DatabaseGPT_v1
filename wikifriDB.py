@@ -23,8 +23,8 @@ SUGGESTIONS = [
 
 
 
-logo_path = "C://Users//ramen.chetia//Desktop//WikiFri//code//bk-logo.png" 
-image_path = "C://Users//ramen.chetia//Desktop//WikiFri//code//database.png"
+logo_path = "bk-logo.png" 
+image_path = "database.png"
 
 def get_logo_base64(logo_path):
     with open(logo_path, "rb") as image_file:
@@ -352,4 +352,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
