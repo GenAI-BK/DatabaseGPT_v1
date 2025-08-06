@@ -12,7 +12,8 @@ from langchain.memory import ConversationBufferMemory
 import base64
 
 # --- Constants ---
-DB_URI = "mssql+pyodbc://@192.168.2.96\\SQL19/BREGLLM?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL+Server"
+DB_URI = "sqlite:///insurance_dashboard.db"
+
 TABLES = ["CUSTOMER_INSIGHTS", "AGENT_PERFORMANCE", "GEOGRAPHIC_ANALYSIS", "POLICY_PERFORMANCE"]
 SUGGESTIONS = [
     "Which agent collected the most premium but still has a big loss in revenue?",
@@ -35,7 +36,7 @@ def get_base64_image(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 # --- Environment Setup ---
-os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+api_key = os.getenv("OPENAI_API_KEY")
 
 def apply_custom_css_and_logo():
     icon_base64 = get_base64_image(image_path)
@@ -278,7 +279,7 @@ def page_database_qa():
             st.rerun()
 
     db = get_database()
-    llm = ChatOpenAI(model_name="gpt-4o", temperature=0.2)
+    llm = ChatOpenAI(openai_api_key=api_key,model_name="gpt-4o", temperature=0.2)
     schema_info = db.get_table_info(table_names=TABLES)
 
     system_prompt = f"""
@@ -352,5 +353,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
